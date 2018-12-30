@@ -3,7 +3,13 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
 #include <QDir>
+#include <QMessageBox>
+
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;
