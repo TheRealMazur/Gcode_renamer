@@ -26,8 +26,11 @@ public:
 private slots:
     void on_openButton_released();
 
+    void on_pushButton_2_released();
+
 private:
     Ui::MainWindow *ui;
+    QFile file2Open, file2Save;
 };
 
 #endif // MAINWINDOW_H
