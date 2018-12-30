@@ -6,10 +6,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->filenameText->setVisible(0);
-    ui->printTimeText->setVisible(0);
-    ui->printSilentTimeText->setVisible(0);
-    ui->newFilenameText->setVisible(0);
+    ui->filenameText->hide();
+    ui->printTimeText->hide();
+    ui->printSilentTimeText->hide();
+    ui->newFilenameText->hide();
+    ui->label_newFilename->hide();
+    ui->label_normalTime->hide();
+    ui->label_silentTime->hide();
 }
 
 MainWindow::~MainWindow()
@@ -36,21 +39,66 @@ void MainWindow::on_openButton_released()
     QFileInfo fileInfo(file.fileName());
     QString filename(fileInfo.fileName());
     ui->filenameText->setText(filename);
-    ui->filenameText->setVisible(1);
+    ui->filenameText->show();
+    ui->filenameText->setToolTip(filename);
     QTextStream in (&file);
-    QString searchString("estimated printing time");
+    QString searchString("time");
+    QString slic3rString("estimated");
+    QString normalTime = "", silentTime = "";
     QString line;
-    bool found = false;
+
     do {
         line = in.readLine();
-        if (line.contains(searchString, Qt::CaseSensitive)) {
-            qDebug() << line.remove(0, line.lastIndexOf('=')+2);
+        if (line.contains(searchString, Qt::CaseInsensitive)) {
+            if(line.contains(slic3rString,Qt::CaseSensitive))
+            {
+                if(line.contains("silent mode",Qt::CaseSensitive))
+                {
+                    silentTime = line.remove(0, line.lastIndexOf('=')+2);
+                }
+                else
+                {
+                    normalTime = line.remove(0, line.lastIndexOf('=')+2);
+                }
+            }
 
-            found=true;
+            else
+            {
+                if(line.contains("TIME:",Qt::CaseSensitive))
+                {
+                    QString timeString = line.remove(0,line.lastIndexOf(':')+1);
+                    int time2convert=timeString.toInt();
+                    QString h = QVariant(time2convert/3600).toString();
+                    QString m = QVariant((time2convert/60)%60).toString();
+                    QString s = QVariant(time2convert%60).toString();
+                    normalTime = h + "h " + m +"min " + s+"s";
+                    //normalTime = QStringLiteral("%1h %2min %3s").arg(time2convert/3600,(time2convert/60)%60,time2convert%60);
+                    qDebug() << timeString;
+                }
+            }
+
+
+
         }
     } while (!line.isNull());
 
-    if (!found)
+
+
+    if(!normalTime.isEmpty())
+    {
+        ui->printTimeText->setText(normalTime);
+        ui->printTimeText->show();
+        ui->label_normalTime->show();
+
+    }
+    if(!silentTime.isEmpty())
+    {
+        ui->printSilentTimeText->setText(silentTime);
+        ui->printSilentTimeText->show();
+        ui->label_silentTime->show();
+
+    }
+    if (normalTime.isEmpty())
     {
         QMessageBox::information(this, tr("No print time info found!"),"No print time info found!");
     }

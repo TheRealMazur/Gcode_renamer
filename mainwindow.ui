@@ -27,17 +27,17 @@
      <string>Open file</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="label_normalTime">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>10</x>
       <y>120</y>
-      <width>61</width>
-      <height>16</height>
+      <width>131</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Print time:</string>
+     <string>Print time (normal mode):</string>
     </property>
    </widget>
    <widget class="QLabel" name="printTimeText">
@@ -53,7 +53,7 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_newFilename">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -95,7 +95,7 @@
    <widget class="QLabel" name="filenameText">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>140</x>
       <y>40</y>
       <width>231</width>
       <height>16</height>
@@ -105,10 +105,10 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="label_oriFilename">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>10</x>
       <y>40</y>
       <width>47</width>
       <height>13</height>
@@ -131,17 +131,17 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_silentTime">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>10</x>
       <y>150</y>
-      <width>61</width>
-      <height>16</height>
+      <width>121</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Print time:</string>
+     <string>Print time(silent mode):</string>
     </property>
    </widget>
   </widget>
