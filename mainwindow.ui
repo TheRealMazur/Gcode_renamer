@@ -10,10 +10,16 @@
     <height>349</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Gcode renamer</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
    <widget class="QPushButton" name="openButton">
     <property name="geometry">
      <rect>
@@ -22,6 +28,9 @@
       <width>75</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
     </property>
     <property name="text">
      <string>Open file</string>

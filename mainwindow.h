@@ -8,6 +8,8 @@
 #include <QTextStream>
 #include <QDir>
 #include <QMessageBox>
+#include <QMimeData>
+#include <QDropEvent>
 
 #include <QDebug>
 
@@ -22,6 +24,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
 
 private slots:
     void on_openButton_released();

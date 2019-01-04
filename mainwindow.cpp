@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_normalTime->hide();
     ui->label_silentTime->hide();
     ui->pushButton_2->setEnabled(false);
+    MainWindow::setAcceptDrops(true);
+    ui->openButton->setAcceptDrops(true);
 
 }
 
@@ -21,6 +23,42 @@ MainWindow::~MainWindow()
 {
     delete ui;
     if(file2Open.isOpen())file2Open.close();
+}
+
+void MainWindow::dropEvent( QDropEvent *event )
+{
+    const QMimeData* mimeData = event->mimeData();
+
+       if (mimeData->hasUrls())
+       {
+         QStringList pathList;
+         QList<QUrl> urlList = mimeData->urls();
+
+         for (int i = 0; i < urlList.size() && i < 32;++i)
+         {
+             foreach(QString str, QStringList(QString("GCODE,GCO,G,NGC").split(','))){
+                 if(str.compare(QFileInfo(urlList.at(i).toLocalFile()).suffix().toUpper(), Qt::CaseSensitive) == 0)
+                 {
+                     pathList.append(urlList.at(i).toLocalFile());
+                 }
+
+             }
+
+         }
+
+         qDebug() << pathList;
+
+       }
+}
+
+void MainWindow::dragEnterEvent( QDragEnterEvent *event )
+{
+foreach(QUrl url, event->mimeData()->urls())
+if (QFileInfo(url.toLocalFile()).suffix().toUpper()=="GCODE")
+{
+event->acceptProposedAction();
+return;
+}
 }
 
 void MainWindow::on_openButton_released()
@@ -37,7 +75,7 @@ void MainWindow::on_openButton_released()
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFile);
     QString fileName = dialog.getOpenFileName(this,
-        tr("Open Gcode"), QDir::homePath()+="/Desktop", tr("Gcode Files (*.gcode)"));
+        tr("Open Gcode"), QDir::homePath()+="/Desktop", tr("Gcode Files (*.gcode *.gco *.g *.ngc)"));
     file2Open.setFileName(fileName);
     if (!file2Open.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QMessageBox::information(this, tr("Unable to open file"),
@@ -57,35 +95,39 @@ void MainWindow::on_openButton_released()
 
     do {
         line = in.readLine();
-        if (line.contains(searchString, Qt::CaseInsensitive)) {
-            if(line.contains(slic3rString,Qt::CaseSensitive))
-            {
-                if(line.contains("silent mode",Qt::CaseSensitive))
+        if(line.startsWith(';', Qt::CaseSensitive))
+        {
+            if (line.contains(searchString, Qt::CaseInsensitive)) {
+                if(line.contains(slic3rString,Qt::CaseSensitive))
                 {
-                    silentTime = line.remove(0, line.lastIndexOf('=')+2);
+                    if(line.contains("silent mode",Qt::CaseSensitive))
+                    {
+                        silentTime = line.remove(0, line.lastIndexOf('=')+2);
+                    }
+                    else
+                    {
+                        normalTime = line.remove(0, line.lastIndexOf('=')+2);
+                    }
                 }
+
                 else
                 {
-                    normalTime = line.remove(0, line.lastIndexOf('=')+2);
+                    if(line.contains("TIME:",Qt::CaseSensitive))
+                    {
+                        QString timeString = line.remove(0,line.lastIndexOf(':')+1);
+                        int time2convert=timeString.toInt();
+                        QString h = QVariant(time2convert/3600).toString();
+                        QString m = QVariant((time2convert/60)%60).toString();
+                        QString s = QVariant(time2convert%60).toString();
+                        normalTime = h + "h " + m +"min " + s+"s";
+
+
+                    }
                 }
+
+
+
             }
-
-            else
-            {
-                if(line.contains("TIME:",Qt::CaseSensitive))
-                {
-                    QString timeString = line.remove(0,line.lastIndexOf(':')+1);
-                    int time2convert=timeString.toInt();
-                    QString h = QVariant(time2convert/3600).toString();
-                    QString m = QVariant((time2convert/60)%60).toString();
-                    QString s = QVariant(time2convert%60).toString();
-                    normalTime = h + "h " + m +"min " + s+"s";
-
-                }
-            }
-
-
-
         }
     } while (!line.isNull());
 
