@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QDropEvent>
+#include "gcodefile.h"
 
 #include <QDebug>
 
@@ -33,10 +34,13 @@ private slots:
     void on_openButton_released();
 
     void on_pushButton_2_released();
+    void openNewGcode();
+    void openNewGcode(QString path);
 
 private:
     Ui::MainWindow *ui;
-    QFile file2Open, file2Save;
+    //QFile file2Open, file2Save;
+
 };
 
 #endif // MAINWINDOW_H
