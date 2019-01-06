@@ -91,8 +91,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>310</y>
+      <x>140</x>
+      <y>360</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -124,7 +124,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>File:</string>
+     <string>File(s):</string>
     </property>
    </widget>
    <widget class="QLabel" name="printSilentTimeText">
@@ -157,7 +157,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>330</y>
       <width>311</width>
       <height>17</height>
      </rect>
@@ -185,8 +185,8 @@
    <widget class="QComboBox" name="deleteOriginalFileCheckBox">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>240</y>
+      <x>150</x>
+      <y>300</y>
       <width>69</width>
       <height>22</height>
      </rect>
@@ -206,13 +206,89 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
+      <y>300</y>
       <width>111</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
      <string>Delete original file?</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="timePlaceComboBox">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>240</y>
+      <width>69</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Begining</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>End</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>240</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Where to add the print time?</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="separatorComboBox">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>270</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>_(underscore)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>-(dash)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>.(dot)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>(None)</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Separator</string>
     </property>
    </widget>
   </widget>

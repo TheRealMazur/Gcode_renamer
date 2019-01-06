@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->statusBar->showMessage("Hint: You can drag & drop files!");
     ui->filenameText->hide();
     ui->printTimeText->hide();
     ui->printSilentTimeText->hide();
@@ -78,7 +79,6 @@ void MainWindow::openNewGcode()
     ui->filenameText->show();
 
 
-
     if(!test.getNormalTime().isEmpty())
     {
 
@@ -101,7 +101,8 @@ void MainWindow::openNewGcode()
     }
     else if(ui->autoSaveCheckBox->isChecked())
     {
-        test.saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex());
+        test.saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
+
 
     }
 
@@ -117,6 +118,7 @@ void MainWindow::openNewGcode(QString path)
     ui->label_normalTime->hide();
     ui->label_silentTime->hide();
     ui->filenameText->hide();
+
 
     GcodeFile test(path,this);
 
@@ -146,7 +148,7 @@ void MainWindow::openNewGcode(QString path)
     }
     else if(ui->autoSaveCheckBox->isChecked())
     {
-        test.saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex());
+        test.saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
 
     }
 }

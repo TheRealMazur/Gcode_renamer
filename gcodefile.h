@@ -9,6 +9,7 @@
 #include <QMessageBox>
 //#include <QWidget>
 #include <QTextStream>
+#include <QApplication>
 
 #include <QDebug>
 
@@ -18,6 +19,8 @@ class GcodeFile : public QMainWindow
     Q_OBJECT
     QFile file;
     QString filePath, oriFileName, normalTime, silentTime;
+    QString getSlic3rTime(QString line);
+    char separators[3]={'_','-','.'};
 public:
     explicit GcodeFile(QString fileName, QWidget * parent = nullptr);
     explicit GcodeFile(QWidget * parent = nullptr);
@@ -26,7 +29,7 @@ public:
     QString getOriFileName();
     QString getNormalTime();
     QString getSilentTime();
-    void saveRenamed(bool deleteOriginal);
+    void saveRenamed(bool deleteOriginal, bool addAtEnd, char separator, bool silentMode = false);
 
 signals:
 
