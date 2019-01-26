@@ -34,11 +34,12 @@ private slots:
     void on_openButton_released();
 
     void on_pushButton_2_released();
-    void openNewGcode();
     void openNewGcode(QString path);
+
 
 private:
     Ui::MainWindow *ui;
+    GcodeFile *loadedGcodeFile; // the G-Code file that has been loaded into the program
     //QFile file2Open, file2Save;
 
 };
