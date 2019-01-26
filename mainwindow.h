@@ -40,6 +40,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     GcodeFile *loadedGcodeFile; // the G-Code file that has been loaded into the program
+    void safeNewGcode();
     //QFile file2Open, file2Save;
 
 };

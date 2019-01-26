@@ -47,7 +47,13 @@ void MainWindow::dropEvent( QDropEvent *event )
          }
 
          //qDebug() << pathList;
-         openNewGcode(pathList[0]);
+         if(pathList.size() > 1){
+             ui->autoSaveCheckBox->setChecked(true);
+         }
+         for(int i = 0; i< pathList.size(); i++){
+             openNewGcode(pathList[i]);
+         }
+
 
        }
 }
@@ -105,9 +111,14 @@ void MainWindow::openNewGcode(QString path)
     }
     else if(ui->autoSaveCheckBox->isChecked())
     {
-        loadedGcodeFile->saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
+        safeNewGcode();
 
     }
+}
+
+void MainWindow::safeNewGcode()
+{
+    loadedGcodeFile->saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
 }
 
 void MainWindow::on_openButton_released()
@@ -126,7 +137,7 @@ void MainWindow::on_pushButton_2_released()
 
     //file2Open.fileName().chop(file2Open.fileName().lastIndexOf('.'));
     //file2Open.copy("C:/Users/Kris/Desktop/aaaTEST/qt.gcode");
-    loadedGcodeFile->saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
+    safeNewGcode();
 
 
 }
