@@ -10,9 +10,12 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QDropEvent>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QApplication>
 #include "gcodefile.h"
 
-#include <QDebug>
+
 
 namespace Ui {
 class MainWindow;
@@ -40,8 +43,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     GcodeFile *loadedGcodeFile; // the G-Code file that has been loaded into the program
-    void safeNewGcode();
-    //QFile file2Open, file2Save;
+    void saveNewGcode();
+    void loadSettings();
+    void saveSettings();
 
 };
 

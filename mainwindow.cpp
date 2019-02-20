@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    loadSettings();
     ui->statusBar->showMessage("Hint: You can drag & drop files!");
     ui->filenameText->hide();
     ui->printTimeText->hide();
@@ -22,7 +24,40 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    saveSettings();
     delete ui;
+}
+
+void MainWindow::loadSettings()
+{
+
+    QSettings settings(QSettings::NativeFormat, QSettings::UserScope,"Gcode_Renamer","Gcode_Renamer");
+
+    if(settings.childGroups().contains("settings"))
+    {
+        settings.beginGroup("settings");
+        ui->timePlaceComboBox->setCurrentIndex(settings.value("timePlace","0").toInt());
+        ui->separatorComboBox->setCurrentIndex(settings.value("separator","0").toInt());
+        ui->deleteOriginalFileComboBox->setCurrentIndex(settings.value("delete","0").toInt());
+        ui->autoSaveCheckBox->setChecked(settings.value("autoSave", "false").toBool());
+        ui->silentModeCheckBox->setChecked(settings.value("silentMode", "false").toBool());
+        settings.endGroup();
+    }
+
+}
+
+void MainWindow::saveSettings()
+{
+     QSettings settings(QSettings::NativeFormat, QSettings::UserScope,"Gcode_Renamer","Gcode_Renamer");
+     settings.beginGroup("settings");
+     settings.setValue("timePlace", ui->timePlaceComboBox->currentIndex());
+     settings.setValue("separator", ui->separatorComboBox->currentIndex());
+     settings.setValue("delete", ui->deleteOriginalFileComboBox->currentIndex());
+     settings.setValue("autoSave", ui->autoSaveCheckBox->isChecked());
+     settings.setValue("silentMode", ui->silentModeCheckBox->isChecked());
+     settings.endGroup();
+     settings.sync();
+
 }
 
 void MainWindow::dropEvent( QDropEvent *event )
@@ -45,14 +80,25 @@ void MainWindow::dropEvent( QDropEvent *event )
              }
 
          }
+         if(pathList.size() > 1)
+         {
+             if(ui->autoSaveCheckBox->isChecked())
+             {
+                 for(int i = 0; i< pathList.size(); i++)
+                 {
+                     openNewGcode(pathList[i]);
+                 }
+             }
+             else
+             {
+                 openNewGcode(pathList[0]);
+             }
+         }
+         else
+         {
+             openNewGcode(pathList[0]);
+         }
 
-         //qDebug() << pathList;
-         if(pathList.size() > 1){
-             ui->autoSaveCheckBox->setChecked(true);
-         }
-         for(int i = 0; i< pathList.size(); i++){
-             openNewGcode(pathList[i]);
-         }
 
 
        }
@@ -60,12 +106,12 @@ void MainWindow::dropEvent( QDropEvent *event )
 
 void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 {
-foreach(QUrl url, event->mimeData()->urls())
-if (QFileInfo(url.toLocalFile()).suffix().toUpper()=="GCODE")
-{
-event->acceptProposedAction();
-return;
-}
+    foreach(QUrl url, event->mimeData()->urls())
+    if (QFileInfo(url.toLocalFile()).suffix().toUpper()=="GCODE")
+    {
+        event->acceptProposedAction();
+        return;
+    }
 }
 
 
@@ -87,7 +133,6 @@ void MainWindow::openNewGcode(QString path)
 
     ui->filenameText->setText(loadedGcodeFile->getOriFileName());
     ui->filenameText->show();
-    //qDebug() << test.getOriFileName();
 
     if(!loadedGcodeFile->getNormalTime().isEmpty())
     {
@@ -111,14 +156,14 @@ void MainWindow::openNewGcode(QString path)
     }
     else if(ui->autoSaveCheckBox->isChecked())
     {
-        safeNewGcode();
+        saveNewGcode();
 
     }
 }
 
-void MainWindow::safeNewGcode()
+void MainWindow::saveNewGcode()
 {
-    loadedGcodeFile->saveRenamed(ui->deleteOriginalFileCheckBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex());
+    loadedGcodeFile->saveRenamed(ui->deleteOriginalFileComboBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex(), ui->silentModeCheckBox->isChecked());
 }
 
 void MainWindow::on_openButton_released()
@@ -134,10 +179,5 @@ void MainWindow::on_openButton_released()
 
 void MainWindow::on_pushButton_2_released()
 {
-
-    //file2Open.fileName().chop(file2Open.fileName().lastIndexOf('.'));
-    //file2Open.copy("C:/Users/Kris/Desktop/aaaTEST/qt.gcode");
-    safeNewGcode();
-
-
+    saveNewGcode();
 }

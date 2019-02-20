@@ -70,7 +70,6 @@ QString GcodeFile::getSlic3rTime(QString line)
 {
     QString processedTime;
     QString time = line.remove(0, line.lastIndexOf('=')+2);
-    processedTime = time;
     QString s=time;
     s =s.remove(0, s.lastIndexOf('m')+2);
     s=s.left(s.lastIndexOf('s'));
@@ -109,6 +108,7 @@ QString GcodeFile::getSlic3rTime(QString line)
         if(minsInt==59)
         {
             minsInt=0;
+            hrsInt+=1;
         }
         else
         {
@@ -116,8 +116,11 @@ QString GcodeFile::getSlic3rTime(QString line)
         }
 
 
-
-        processedTime=QString::number(hrsInt)+"h "+QString::number(minsInt)+"min";
+        if(hrsInt != 0)
+        {
+            processedTime=QString::number(hrsInt)+"h ";
+        }
+        processedTime += QString::number(minsInt)+"min";
     }
     else
     {

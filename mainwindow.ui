@@ -44,7 +44,7 @@
         <item>
          <widget class="QLabel" name="label_oriFilename">
           <property name="text">
-           <string>File(s):</string>
+           <string>File:</string>
           </property>
          </widget>
         </item>
@@ -183,7 +183,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="deleteOriginalFileCheckBox">
+           <widget class="QComboBox" name="deleteOriginalFileComboBox">
             <item>
              <property name="text">
               <string>No</string>
@@ -208,7 +208,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="silentModeCheckBox">
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
         </property>
