@@ -13,6 +13,10 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QApplication>
+
+#include <QPixmap>
+#include <QDir>
+
 #include "gcodefile.h"
 
 
@@ -40,12 +44,28 @@ private slots:
     void openNewGcode(QString path);
 
 
+    void on_actionOpen_triggered();
+
+    void on_silentModeCheckBox_stateChanged(int arg1);
+
+    void on_separatorComboBox_currentIndexChanged(int index);
+
+    void on_timePlaceComboBox_currentIndexChanged(int index);
+
+    void on_timeFormatComboBox_currentIndexChanged(int index);
+
+    void on_actionAbout_triggered();
+
+    void on_actionAbout_Qt_triggered();
+
 private:
     Ui::MainWindow *ui;
-    GcodeFile *loadedGcodeFile; // the G-Code file that has been loaded into the program
+    GcodeFile *loadedGcodeFile = nullptr; // the G-Code file that has been loaded into the program
     void saveNewGcode();
     void loadSettings();
     void saveSettings();
+    void openActionTriggerred();    //added to avoid code duplication, used whenever user wants to open the file opening dialog
+    void updateNewFilename();
 
 };
 

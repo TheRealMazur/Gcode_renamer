@@ -34,7 +34,15 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+RESOURCES += \
+    src.qrc
+
+
+win32:RC_ICONS += Gcode_renamer.ico
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+

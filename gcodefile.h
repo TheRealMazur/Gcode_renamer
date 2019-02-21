@@ -20,6 +20,7 @@ class GcodeFile : public QMainWindow
     QFile file;
     QString filePath, oriFileName, normalTime, silentTime;
     QString getSlic3rTime(QString line);
+    QString translateTimeFormat(QString in, int timeFormat);
     char separators[3]={'_','-','.'};
 public:
     explicit GcodeFile(QString fileName, QWidget * parent = nullptr);
@@ -29,7 +30,8 @@ public:
     QString getOriFileName();
     QString getNormalTime();
     QString getSilentTime();
-    void saveRenamed(bool deleteOriginal, bool addAtEnd, char separator, bool silentMode = false);
+    QString getNewName(int timeFormat, bool addAtEnd, int separator, bool silentMode = false);
+    void saveRenamed(int timeFormat, bool deleteOriginal, bool addAtEnd, int separator, bool silentMode = false);
 
 signals:
 

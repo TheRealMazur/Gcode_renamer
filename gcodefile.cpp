@@ -129,6 +129,63 @@ QString GcodeFile::getSlic3rTime(QString line)
     return processedTime;
 }
 
+QString GcodeFile::translateTimeFormat(QString in, int timeFormat)
+{
+    int h,m;
+    QString temp(in);
+    //get the number of hours and mins as integers
+    if(in.contains('h'))
+    {
+        h = QString(in).left(in.lastIndexOf('h')).toInt();
+
+        temp = temp.right(in.size()-in.lastIndexOf(' ')-1);
+        temp.chop(3);
+        m = temp.toInt();
+    }
+    else
+    {
+        h = 0;
+
+        temp.chop(3);
+        m = temp.toInt();
+    }
+
+    //format the data accordingly:
+
+
+    if(timeFormat == 1)
+    {
+        if (h == 0)
+        {
+            return in;
+        }
+        if(m >= 30)
+        {
+            h++;
+        }
+        return QString::number(h) + "h";
+    }
+
+    if(timeFormat == 2)
+    {
+        if(m > 45)
+        {
+            return QString::number(h+1) + ".0h";
+        }
+        if(m < 16)
+        {
+            if(h == 0)
+            {
+                return QString("0.5h");
+            }
+            return QString::number(h) + ".0h";
+        }
+        return QString::number(h) + ".5h";
+    }
+
+    return in.replace(" ", "");
+
+}
 
 void GcodeFile::extractTime()
 {
@@ -150,7 +207,6 @@ void GcodeFile::extractTime()
     do {
         line = in.readLine();
         if(line[0]==';')
-        //if(line.startsWith(';', Qt::CaseSensitive))
         {
             if (line.contains(searchString, Qt::CaseInsensitive)) {
                 if(line.contains(slic3rString,Qt::CaseSensitive))
@@ -191,7 +247,6 @@ void GcodeFile::extractTime()
                         normalTime="";
                         if(h>0)normalTime+=QString::number(h)+"h ";
                         normalTime+=QString::number(m)+"min";
-                        //normalTime = h + "h " + m +"m";
 
 
                     }
@@ -199,11 +254,11 @@ void GcodeFile::extractTime()
                     {
                         QString timeString = line.remove(0,line.lastIndexOf(':')+2);
                         QStringList list = timeString.split(' ');
-                        //normalTime = list[0] + "h " + list[2] +"m";
                         int h=list[0].toInt();
                         int m = list[2].toInt();
                         normalTime = "";
-                        if(h>0)normalTime+=QString::number(h)+"h ";
+                        if(h>0)
+                            normalTime+=QString::number(h)+"h ";
                         normalTime+=QString::number(m)+"min";
                     }
                 }
@@ -218,18 +273,34 @@ void GcodeFile::extractTime()
 
 }
 
-void GcodeFile::saveRenamed(bool deleteOriginal, bool addAtEnd, char separator, bool silentMode)
+QString GcodeFile::getNewName(int timeFormat, bool addAtEnd, int separator, bool silentMode)
 {
-    QString newFile=filePath.left(filePath.lastIndexOf("/",-1,Qt::CaseSensitive)+1);
-    QString time2paste;
-    if(silentMode && !silentTime.isEmpty())
+    QString newFile = filePath;
+    QString chosenTime = normalTime;
+    if(silentMode && !(silentTime.isEmpty()))
     {
-        time2paste=silentTime.replace(" ", "");
+        chosenTime = silentTime;
     }
     else
     {
-        time2paste+=normalTime.replace(" ", "");
+        chosenTime = normalTime;
     }
+
+    newFile = newFile.left(newFile.lastIndexOf("/",-1,Qt::CaseSensitive)+1);
+    QString time2paste;
+
+
+    if(timeFormat == 0)
+    {
+        time2paste = chosenTime.replace(" ", "");
+    }
+    else
+    {
+        time2paste = translateTimeFormat(chosenTime, timeFormat);
+    }
+
+
+
     if(!addAtEnd)
     {
         newFile+=time2paste;
@@ -238,12 +309,18 @@ void GcodeFile::saveRenamed(bool deleteOriginal, bool addAtEnd, char separator, 
     }
     else
     {
-        newFile+=oriFileName.left(oriFileName.lastIndexOf('.'));
+        newFile+=QString(oriFileName).left(oriFileName.lastIndexOf('.'));           //QString(oriFileName) to avoid working on the original QString
         if(separator<3)newFile+=separators[separator];
         newFile+=time2paste;
-        newFile+=oriFileName.remove(0,oriFileName.lastIndexOf('.'));
+        newFile+=QString(oriFileName).remove(0,oriFileName.lastIndexOf('.'));
 
     }
+    return newFile;
+}
+
+void GcodeFile::saveRenamed(int timeFormat, bool deleteOriginal, bool addAtEnd, int separator, bool silentMode)
+{
+    QString newFile = getNewName(timeFormat, addAtEnd, separator, silentMode);
 
     if(deleteOriginal)
     {

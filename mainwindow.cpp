@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     loadSettings();
-    ui->statusBar->showMessage("Hint: You can drag & drop files!");
+    ui->statusBar->addPermanentWidget(new QLabel(QString("Hint: You can drag & drop files!")));     //had to change it to permanent, because menu was hiding it
     ui->filenameText->hide();
     ui->printTimeText->hide();
     ui->printSilentTimeText->hide();
@@ -154,30 +154,86 @@ void MainWindow::openNewGcode(QString path)
     {
         QMessageBox::information(this, tr("No print time info found!"),"No print time info found!");
     }
-    else if(ui->autoSaveCheckBox->isChecked())
+    else
     {
-        saveNewGcode();
+        ui->newFilenameText->setText(loadedGcodeFile->getNewName(ui->timeFormatComboBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex(),ui->silentModeCheckBox->isChecked()));
+        ui->label_newFilename->show();
+        ui->newFilenameText->show();
+        if(ui->autoSaveCheckBox->isChecked())
+        {
+            saveNewGcode();
 
+        }
     }
 }
 
 void MainWindow::saveNewGcode()
 {
-    loadedGcodeFile->saveRenamed(ui->deleteOriginalFileComboBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex(), ui->silentModeCheckBox->isChecked());
+    loadedGcodeFile->saveRenamed(ui->timeFormatComboBox->currentIndex(),ui->deleteOriginalFileComboBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex(), ui->silentModeCheckBox->isChecked());
 }
 
-void MainWindow::on_openButton_released()
+void MainWindow::openActionTriggerred()
 {
-    //if(file2Open.isOpen())file2Open.close();
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open Gcode file"), "", tr("Gcode files (*.gcode)"));
     if(fileName != ""){
         openNewGcode(fileName);
     }
+}
 
+void MainWindow::updateNewFilename()
+{
+    if(loadedGcodeFile)
+    {
+        if(!(loadedGcodeFile->getNormalTime().isEmpty()))
+        {
+            ui->newFilenameText->setText(loadedGcodeFile->getNewName(ui->timeFormatComboBox->currentIndex(),ui->timePlaceComboBox->currentIndex(),ui->separatorComboBox->currentIndex(),ui->silentModeCheckBox->isChecked()));
+        }
+    }
+}
 
+void MainWindow::on_openButton_released()
+{
+    openActionTriggerred();
 }
 
 void MainWindow::on_pushButton_2_released()
 {
     saveNewGcode();
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    openActionTriggerred();
+}
+
+void MainWindow::on_silentModeCheckBox_stateChanged(int)
+{
+    updateNewFilename();
+}
+
+void MainWindow::on_separatorComboBox_currentIndexChanged(int )
+{
+    updateNewFilename();
+}
+
+void MainWindow::on_timePlaceComboBox_currentIndexChanged(int )
+{
+    updateNewFilename();
+}
+
+void MainWindow::on_timeFormatComboBox_currentIndexChanged(int )
+{
+    updateNewFilename();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox msgBox;
+    msgBox.about(this,"About","<img src=\":/coffee.png\" alt=\"Buy me a Beer!\">");
+}
+
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox msgBox;
+    msgBox.aboutQt(this,"About Qt");
 }
