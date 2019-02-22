@@ -229,7 +229,10 @@ void MainWindow::on_timeFormatComboBox_currentIndexChanged(int )
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox msgBox;
-    msgBox.about(this,"About","<img src=\":/coffee.png\" alt=\"Buy me a Beer!\">");
+    msgBox.setTextFormat(Qt::RichText);
+    msgBox.setText("<meta charset=\"UTF-8\"><div align=\"left\"><h2>About:</h2>This is a simple tool for adding the print time to the names of Gcode files.<br>It should work with Slic3r, Cura and Simplify3D.<br>If you found any bugs or have any questions, please contact me via my <a href=\"https://github.com/krzmazur1/Gcode_renamer\">Github page.</a><h3>Like my work? Consider supporting 😁</h3><br><a href=\"https://www.buymeacoffee.com/krzmazur1\"><img src=\":/coffee.png\" alt=\"Buy me a Beer!\"></a><br><br>Application icon from: <a href=\"http://icons8.com/\">http://icons8.com/</a><br>©Krzysztof Mazur 2019</div>");
+    msgBox.exec();
+    //msgBox.about(this,"About","<img src=\":/coffee.png\" alt=\"Buy me a Beer!\">");
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()
