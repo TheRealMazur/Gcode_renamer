@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Gcode renamer</Name>
+    <Version>0.1.0</Version>
+    <Title>Gcode renamer installer</Title>
+    <Publisher>Krzysztof Mazur</Publisher>
+    <StartMenuDir>Gcode renamer</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/Gcode renamer</TargetDir>
+	<ControlScript>controlscript.qs</ControlScript>
+    <MaintenanceToolName>uninstaller</MaintenanceToolName>
+</Installer>
