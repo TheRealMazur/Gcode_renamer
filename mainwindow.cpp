@@ -31,7 +31,7 @@ MainWindow::~MainWindow()
 void MainWindow::loadSettings()
 {
 
-    QSettings settings(QSettings::NativeFormat, QSettings::UserScope,"Gcode_Renamer","Gcode_Renamer");
+    QSettings settings(QStandardPaths::writableLocation( QStandardPaths::AppDataLocation) + "/settings.ini", QSettings::IniFormat);
 
     if(settings.childGroups().contains("settings"))
     {
@@ -48,7 +48,7 @@ void MainWindow::loadSettings()
 
 void MainWindow::saveSettings()
 {
-     QSettings settings(QSettings::NativeFormat, QSettings::UserScope,"Gcode_Renamer","Gcode_Renamer");
+     QSettings settings( QStandardPaths::writableLocation( QStandardPaths::AppDataLocation) + "/settings.ini", QSettings::IniFormat);
      settings.beginGroup("settings");
      settings.setValue("timePlace", ui->timePlaceComboBox->currentIndex());
      settings.setValue("separator", ui->separatorComboBox->currentIndex());

@@ -27,3 +27,11 @@ Controller.prototype.LicenseAgreementPageCallback = function()
         widget.AcceptLicenseRadioButton.checked = true;
     }
 }
+
+Controller.prototype.FinishedPageCallback = function() {
+
+if (installer.isUninstaller() && installer.status == QInstaller.Success)  
+    {
+		installer.performOperation("Delete","@HomeDir@/AppData/Roaming/krzmazur1");
+    }  
+}

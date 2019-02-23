@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>Gcode renamer</DisplayName>
     <Description>Gcode renamer app.</Description>
-    <Version>0.1.0-1</Version>
-    <ReleaseDate>2019-02-20</ReleaseDate>
+    <Version>0.2.0-1</Version>
+    <ReleaseDate>2019-02-23</ReleaseDate>
     <Licenses>
         <License name="MIT License" file="LICENSE" />
     </Licenses>

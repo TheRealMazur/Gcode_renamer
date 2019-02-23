@@ -42,7 +42,6 @@ function cancelInstaller(message)
 
 function Component()
 {
-	installer.setDefaultPageVisible(QInstaller.Introduction, false);
     // constructor
 	
 }
@@ -56,7 +55,6 @@ Component.prototype.isDefault = function()
 Component.prototype.createOperations = function()
 {
     // call default implementation to actually install README.txt!
-	installer.setDefaultPageVisible(QInstaller.Introduction, false);
     try {
         // call the base create operations function
         component.createOperations();
