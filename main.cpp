@@ -4,8 +4,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setOrganizationName("krzmazur1");                //Had to add it to have write permissions in Win 10 -.-'
-    a.setOrganizationDomain("https://github.com/krzmazur1/Gcode_renamer");
+    a.setOrganizationName("TheRealMazur");                //Had to add it to have write permissions in Win 10 -.-'
+    a.setOrganizationDomain("https://github.com/TheRealMazur/Gcode_renamer");
     a.setApplicationName("Gcode_Renamer");
     MainWindow w;
     w.show();
