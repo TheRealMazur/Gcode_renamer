@@ -1,4 +1,4 @@
-name: Build and Create release
+name: Build using CMake and Conan
 
 on: 
   [push]
@@ -14,10 +14,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-      # On Windows machines ${{runner.workspace}} is a folder that has the name of the repository, 
-      # but the checkout action checks the code out to a nested directory with te same name.
-    - name: Create Build Environment
-      run: cmake -E make_directory build
+    - name: Cache conan dependencies in home
+      id: cache-conan-home
+      uses: actions/cache@v1
+      with:
+        path: ~/.conan
+        key: ${{ runner.os }}-conan-home-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-home-${{ hashFiles('**/conanfile.txt') }}
+
+    - name: Cache conan dependencies in shorter path
+      id: cache-conan-short
+      uses: actions/cache@v1
+      with:
+        path: C:\.conan
+        key: ${{ runner.os }}-conan-short-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-short-${{ hashFiles('**/conanfile.txt') }}
 
     - name: Install conan
       run: |
@@ -26,3 +39,8 @@ jobs:
     
     - name: Configure and build
       run: pwsh -command "./build.ps1 ${env:BUILD_TYPE}"
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Gcode_renamer.exe
+        path: build\bin\Gcode_renamer.exe

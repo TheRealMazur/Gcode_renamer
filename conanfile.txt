@@ -6,8 +6,30 @@ qt/5.14.1@bincrafters/stable
 
 [options]
 Qt:shared=False
-Qt:multiconfiguration=True
-Qt:websockets=False
-Qt:webengine=False
+Qt:commercial=False
+Qt:opengl=desktop
+Qt:openssl=False
+Qt:with_pcre2=False
+Qt:with_glib=False
+Qt:with_freetype=False
+Qt:with_fontconfig=False
+Qt:with_icu=False
+Qt:with_harfbuzz=False
+Qt:with_libjpeg=False
+Qt:with_libpng=False
+Qt:with_sqlite3=False
+Qt:with_mysql=False
+Qt:with_pq=False
+Qt:with_odbc=False
+Qt:with_sdl2=False
+Qt:with_libalsa=False
+Qt:with_openal=False
+Qt:with_zstd=False
+Qt:GUI=True
+Qt:widgets=True
+Qt:device=None
+Qt:cross_compile=None
+Qt:sysroot=None
+Qt:config=None
 
 [imports]
