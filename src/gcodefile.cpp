@@ -206,7 +206,8 @@ void GcodeFile::extractTime()
     QString line;
     do {
         line = in.readLine();
-        if(line[0]==';')
+        if(line.isEmpty()) continue;
+        if(line.at(0) ==';')
         {
             if (line.contains(searchString, Qt::CaseInsensitive)) {
                 if(line.contains(slic3rString,Qt::CaseSensitive))
