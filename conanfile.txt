@@ -1,0 +1,13 @@
+[generators]
+cmake
+
+[requires]
+qt/5.14.1@bincrafters/stable
+
+[options]
+Qt:shared=False
+Qt:multiconfiguration=True
+Qt:websockets=False
+Qt:webengine=False
+
+[imports]
