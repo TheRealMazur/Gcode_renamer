@@ -1,0 +1,46 @@
+name: Build using CMake and Conan
+
+on: 
+  [push]
+
+env:
+  BUILD_TYPE: RELEASE
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache conan dependencies in home
+      id: cache-conan-home
+      uses: actions/cache@v1
+      with:
+        path: ~/.conan
+        key: windows-2019-conan-home-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          windows-2019-conan-home-${{ hashFiles('**/conanfile.txt') }}
+
+    - name: Cache conan dependencies in shorter path
+      id: cache-conan-short
+      uses: actions/cache@v1
+      with:
+        path: C:\.conan
+        key: windows-2019-conan-short-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          windows-2019-conan-short-${{ hashFiles('**/conanfile.txt') }}
+
+    - name: Install conan
+      run: |
+        python -m pip install --upgrade pip setuptools
+        python -m pip install conan
+    
+    - name: Configure and build
+      run: pwsh -command "./build.ps1 -g 'Visual Studio 16 2019' -h x86 -c ${env:BUILD_TYPE}"
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Gcode_renamer.exe
+        path: build\bin\Gcode_renamer.exe

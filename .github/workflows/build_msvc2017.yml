@@ -19,18 +19,18 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.conan
-        key: ${{ runner.os }}-conan-home-${{ hashFiles('**/conanfile.txt') }}
+        key: windows-2016-conan-home-${{ hashFiles('**/conanfile.txt') }}
         restore-keys: |
-          ${{ runner.os }}-conan-home-${{ hashFiles('**/conanfile.txt') }}
+          windows-2016-conan-home-${{ hashFiles('**/conanfile.txt') }}
 
     - name: Cache conan dependencies in shorter path
       id: cache-conan-short
       uses: actions/cache@v1
       with:
         path: C:\.conan
-        key: ${{ runner.os }}-conan-short-${{ hashFiles('**/conanfile.txt') }}
+        key: windows-2016-conan-short-${{ hashFiles('**/conanfile.txt') }}
         restore-keys: |
-          ${{ runner.os }}-conan-short-${{ hashFiles('**/conanfile.txt') }}
+          windows-2016-conan-short-${{ hashFiles('**/conanfile.txt') }}
 
     - name: Install conan
       run: |

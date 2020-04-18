@@ -10,7 +10,7 @@ param(
         [string]$config, # Build config to run
     [Parameter(ParameterSetName = 'DefParamSet',Mandatory)]
         [Alias("g")]
-        [ValidateSet("Ninja", "Visual Studio 15 2017")]
+        [ValidateSet("Ninja", "Visual Studio 15 2017", "Visual Studio 16 2019")]
         [string]$generator, # Generator to use
     [Parameter(ParameterSetName = 'DefParamSet')]
         [Alias("h")]
