@@ -31,9 +31,9 @@ if($hostarch){
 if($arch){
     $archparameter = "-A$arch"
 }
-
-cmake -E make_directory $PSScriptRoot/build
-Set-Location $PSScriptRoot/build
+$buildfolder = "$PSScriptRoot/build-$config"
+cmake -E make_directory $buildfolder
+Set-Location $buildfolder
 cmake -G $generator $hostparameter $archparameter .. "-DCMAKE_BUILD_TYPE=$config"
 cmake --build . --config $config 
 Set-Location $PSScriptRoot

@@ -184,13 +184,6 @@ jobs:
           message(FATAL_ERROR "Bad exit status")
         endif()
 
-    - name: Upload environment_script_output.txt
-      if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v1
-      with:
-        path: ./environment_script_output.txt
-        name: environment_script_output.txt
-
     - name: Build
       shell: cmake -P {0}
       run: |
