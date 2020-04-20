@@ -13,7 +13,7 @@ set(SOURCES ${SOURCES})
 
 add_executable(${BINARY} WIN32 ${SOURCES})
 
-
+install(TARGETS ${BINARY} RUNTIME DESTINATION .)
 
 target_link_libraries(
   ${BINARY}
