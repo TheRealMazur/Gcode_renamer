@@ -47,42 +47,22 @@ if(ENABLE_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <map> <utility>)
 endif()
 
-# Set up some extra Conan dependencies based on our needs before loading Conan
-set(CONAN_EXTRA_REQUIRES
-"qt/5.14.1@bincrafters/stable")
-set(CONAN_EXTRA_OPTIONS
-Qt:shared=False
-Qt:commercial=False
-Qt:opengl=desktop
-Qt:openssl=False
-Qt:with_pcre2=False
-Qt:with_glib=False
-Qt:with_doubleconversion=True
-Qt:with_freetype=False
-Qt:with_fontconfig=False
-Qt:with_icu=False
-Qt:with_harfbuzz=False
-Qt:with_libjpeg=False
-Qt:with_libpng=True
-Qt:with_sqlite3=False
-Qt:with_mysql=False
-Qt:with_pq=False
-Qt:with_odbc=False
-Qt:with_sdl2=False
-Qt:with_libalsa=False
-Qt:with_openal=False
-Qt:with_zstd=False
-Qt:GUI=True
-Qt:widgets=True
-Qt:device=None
-Qt:cross_compile=None
-Qt:sysroot=None
-Qt:config=None
-# Qt:multiconfiguration=True # Uncomment this to build both debug and release versions of Qt
-)
+if(WIN32) # conan doesn't escape spaces inside some variables, so we unset them and let qmake find the values
+  set(TEMP_CC $ENV{CC})
+  set(TEMP_CXX $ENV{CXX})
+  unset(ENV{CC})
+  unset(ENV{CXX})
+endif(WIN32)
 
 include(cmake/Conan.cmake)
 run_conan()
+
+if(WIN32) # set variables back after running conan
+  set(CC $ENV{TEMP_CC})
+  set(CXX $ENV{TEMP_CXX})
+  unset(ENV{TEMP_CC})
+  unset(ENV{TEMP_CXX})
+endif(WIN32)
 
 include_directories(src)
 
