@@ -47,22 +47,8 @@ if(ENABLE_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <map> <utility>)
 endif()
 
-if(WIN32) # conan doesn't escape spaces inside some variables, so we unset them and let qmake find the values
-  set(TEMP_CC $ENV{CC})
-  set(TEMP_CXX $ENV{CXX})
-  unset(ENV{CC})
-  unset(ENV{CXX})
-endif(WIN32)
-
 include(cmake/Conan.cmake)
 run_conan()
-
-if(WIN32) # set variables back after running conan
-  set(CC $ENV{TEMP_CC})
-  set(CXX $ENV{TEMP_CXX})
-  unset(ENV{TEMP_CC})
-  unset(ENV{TEMP_CXX})
-endif(WIN32)
 
 include_directories(src)
 
